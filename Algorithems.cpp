@@ -69,10 +69,66 @@ vector<bool> algorithem_four(vector<bool>& array1, vector<bool>& array2)
     }
     return res;
 }
-int  algo_five(vector<bool> n, vector<bool> m)
+
+vector<bool> algorithem_five(vector<bool>& array1, vector<bool>& array2)
 {
+    int N = array1.size();
+    if(N <= 128)
+    {
+        return algorithem_four(array1, array2);
+    }
+
+    else
+    {
+        vector<bool> n1 = first_half_array(array1);
+        vector<bool> n2 = second_half_array(array1);
+        vector<bool> m1 = first_half_array(array2);
+        vector<bool> m2 = second_half_array(array2);
+
+        vector<bool> n1m1 = algorithem_five(n1, m1);
+        vector<bool> n1m2 = algorithem_five(n1, m2);
+        vector<bool> n2m1 = algorithem_five(n2, m1);
+        vector<bool> n2m2 = algorithem_five(n2, m2);
+
+        // Calc : n1m2 + (2^(N/2) * (n1m2 + n2m1)) + 2^N * (n2m2)
+
+        // before sending to an algorithem we assume the numbers in the same size
+        make_numbers_same_len(n1m2, n2m1); 
+        vector<bool> mid_calc = algorithem_two(n1m2, n2m1);
+        times(mid_calc, N/2);
+        times(n2m2, N);
+        // before sending to an algorithem we assume the numbers in the same size
+        make_numbers_same_len(mid_calc, n2m2);
+        mid_calc = algorithem_two(mid_calc, n2m2);
+        // before sending to an algorithem we assume the numbers in the same size
+        make_numbers_same_len(mid_calc, n1m2);
+        vector<bool> res = algorithem_two(mid_calc, n1m2);
+        
+    }
+
+    
+    
 
 }
+vector<bool> first_half_array(vector<bool>& array1)
+{
+    vector<bool> res;
+    for (int i = 0; i < array1.size() / 2; i++)
+    {
+        res.push_back(array1[i]);
+    }
+    
+}
+
+vector<bool> second_half_array(vector<bool>& array1)
+{
+    vector<bool> res;
+    for (int i = array1.size() / 2; i < array1.size(); i++)
+    {
+        res.push_back(array1[i]);
+    }
+}
+
 vector<bool> setBoolArr(string num)
 {
     vector<bool> res;
@@ -90,6 +146,17 @@ void make_number(vector<bool>& number,int sizeToGetTo)
     while (number.size() < sizeToGetTo)
     {
         number.insert(number.begin(), false);
+    }
+}
+void make_numbers_same_len(vector<bool>& array1, vector<bool>& array2)
+{
+    if(array1.size() > array2.size())
+    {
+        make_number(array1, array2.size());
+    }
+    else
+    {
+        make_number(array2, array1.size());
     }
 }
 void times(vector<bool>& number, int pow)
