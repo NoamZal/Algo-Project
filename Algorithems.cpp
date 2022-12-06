@@ -1,5 +1,5 @@
 #include "Algorithems.h"
-//int  algo_one(vector<bool> n, vector<bool> m)
+//vector<bool>  algo_one(vector<bool>& n, vector<bool>& m)
 //{
 //
 //}
