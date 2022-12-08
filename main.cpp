@@ -19,11 +19,15 @@ int main(int argc, char** args)
     cin >> str2;
     vector<bool> array1 = setBoolArr(str1);
     vector<bool> array2 = setBoolArr(str2);
-    vector<bool>res = algorithem_four(array1, array2);
-    deleteZeros(res);
-    for (int i = 0; i < res.size(); i++)
+    Subtract(array1, array2);
+    //vector<bool> res1 = algo_one(array1, array2);
+    //vector<bool>res = algorithem_four(array1, array2);
+    vector<bool>res5 = algorithem_five(array1, array2);
+    //deleteZeros(res5);
+    cout << "\n";
+    for (int i = 0; i < res5.size(); i++)
     {
-        cout << res[i];
+        cout << res5[i];
     }
     //make_number(array1, n);
     //times(array1, m);
