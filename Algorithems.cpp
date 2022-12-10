@@ -1,18 +1,18 @@
 #include "Algorithems.h"
-vector<bool> algo_one(vector<bool>& n, vector<bool>& m)
+vector<bool> algorithem_one(vector<bool>& array1, vector<bool>& array2)
 {
     bool flag = true;
-    vector<bool> array2;
-    vector<bool> res = n;
+    vector<bool> m = array2;
+    vector<bool> res = array1;
     do
     {
-        for (int i = array2.size()-1; i >= 0; i--)
+        for (int i = m.size()-1; i >= 0; i--)
         {
-            if (array2[i] == false)
-                array2[i] = true;
+            if (m[i] == false)
+                m[i] = true;
             else
             {
-                array2[i] = false;
+                m[i] = false;
                 flag = true;
                 break;
             }
@@ -77,9 +77,16 @@ vector<bool> algorithem_two(vector<bool>& array1, vector<bool>& array2)
     deleteZeros(res);
     return res;
 }
-vector<bool> algo_three(vector<bool>  n, vector<bool>  m)
+vector<bool> algorithem_three(vector<bool>& array1, vector<bool>& array2)
 {
-    vector<bool>res;
+    vector<bool>res(array1.size(),0);
+    vector<bool>iter = array2;
+    vector<bool> one(1, 1);
+    while (iter.size() != 0)
+    {
+        res = algorithem_one(res, array1);
+        iter = Subtract(iter, one);
+    }
     return res;
 }
 vector<bool> algorithem_four(vector<bool>& array1, vector<bool>& array2)
@@ -109,7 +116,6 @@ vector<bool> algorithem_four(vector<bool>& array1, vector<bool>& array2)
     deleteZeros(res);
     return res;
 }
-
 vector<bool> algorithem_five(vector<bool>& array1, vector<bool>& array2)
 {
     int N = array1.size();
@@ -194,30 +200,124 @@ vector<bool> algorithem_six(vector<bool>& array1, vector<bool>& array2)
         cout << "n2m2 ="; printArr(G);
 
 
-        // Calc : 2^N * n1m1 + (2^(N/2) * (n1m2 + n2m1)) + (n2m2)
+        // Calc : 2^N * F + (2^(N/2) * (H-(F+G)) + (G)
 
         // before sending to an algorithem we assume the numbers in the same size
-        vector<bool> mid_calc = algorithem_two(F, G);
-        cout << "mid_calc ="; printArr(mid_calc);
+        //create F+G
+        vector<bool> FPlusG = algorithem_two(F, G);
+        vector<bool> mid_calc;
+        cout << "FPlusG ="; printArr(FPlusG);
+        int flag = checkBiggerNumber(H, FPlusG);
+        if (flag == 0)
+        {
+            //handle error
+            exit(1);
+        }
+        else if (flag == 1)
+        {
+            mid_calc = Subtract(H, FPlusG);
+        }
         times(mid_calc, N / 2);
-        cout << "mid_calc after times ="; printArr(mid_calc);
-
+        //cout << "mid_calc after times ="; printArr(FPlusG);
         times(F, N);
-        cout << "n2m2 after times ="; printArr(F);
+        cout << "F after times ="; printArr(F);
 
         // before sending to an algorithem we assume the numbers in the same size
-        make_numbers_same_len(mid_calc, F);
+        //make_numbers_same_len(mid_calc, F);
         mid_calc = algorithem_two(mid_calc, F);
-        cout << "midcalc +n2m2 after times ="; printArr(mid_calc);
+        cout << "midcalc +n2m2 after times ="; printArr(FPlusG);
 
         // before sending to an algorithem we assume the numbers in the same size
-        make_numbers_same_len(mid_calc, G);
+        //make_numbers_same_len(mid_calc, G);
         vector<bool> res = algorithem_two(mid_calc, G);
         cout << "midcalc +n1m2  ="; printArr(res);
         return res;
     }
 }
+vector<bool> algorithem_seven(vector<bool>& array1, vector<bool>& array2, vector<bool>& r)
+{
+    vector<bool> q(1, 1);
+    vector<bool> one(1, 1);
+    vector<bool> mulCheck;
+    do
+    {
+        mulCheck = algorithem_four(array2, q);
+        q = algorithem_two(q, one);
+    } while (checkBiggerNumber(mulCheck, array1) == 0);
+    q = Subtract(q, one);
+    q = Subtract(q, one);
+    mulCheck = algorithem_four(array2, q);
+    r = Subtract(array1, mulCheck);
+    return q;
 
+}
+vector<bool> algorithem_eight(vector<bool>& array1, vector<bool>& array2, vector<bool>& r)
+{
+    vector<bool> mid ; //q=n/2
+    vector<bool> right = array1, left(1,0);
+    vector<bool> one(1, 1);
+    vector<bool> mulCheck;
+    vector<bool> resCheck;
+    //bool flag = true;
+    do
+    {
+        mid = algorithem_two(right, left);
+        mid = divideBytwo(mid);
+        mulCheck = algorithem_four(array2, mid); //m*q
+        if (checkBiggerNumber(mulCheck, array1) == 0) //m*q < n
+        {
+            left = mid;
+            resCheck = algorithem_two(mulCheck, array2);
+            if (checkBiggerNumber(resCheck, array1) == 1) //m*q +m > n
+            {
+                break;
+            }
+        }
+        else if (checkBiggerNumber(mulCheck, array1) == 1) // m*q>n
+        {
+            right = mid;  
+        }
+
+    } while (true);
+    r = Subtract(array1, mulCheck);
+    return mid;
+
+}
+void allHellBreaksloos(vector<bool>& array1, vector<bool>& array2, vector<bool>& r,ofstream& ofile)
+{
+    vector<bool>res;
+    res = algorithem_one(array1, array2);
+    printVecToFile(res, ofile);
+
+    res = algorithem_two(array1, array2);
+    printVecToFile(res, ofile);
+
+    res = algorithem_three(array1, array2);
+    printVecToFile(res, ofile);
+
+
+    res = algorithem_four(array1, array2);
+    printVecToFile(res, ofile);
+
+
+    res = algorithem_five(array1, array2);
+    printVecToFile(res, ofile);
+
+
+    res = algorithem_six(array1, array2);
+    printVecToFile(res, ofile);
+
+    res = algorithem_seven(array1, array2, r);
+    printVecToFile(res, ofile);
+    printVecToFile(r, ofile);
+
+
+
+    res = algorithem_eight(array1, array2, r);
+    printVecToFile(res, ofile);
+    printVecToFile(r, ofile);
+
+}
 vector<bool> first_half_array(vector<bool>& array1)
 {
     vector<bool> res;
@@ -228,7 +328,6 @@ vector<bool> first_half_array(vector<bool>& array1)
     return res;
     
 }
-
 vector<bool> second_half_array(vector<bool>& array1)
 {
     vector<bool> res;
@@ -238,7 +337,6 @@ vector<bool> second_half_array(vector<bool>& array1)
     }
     return res;
 }
-
 vector<bool> setBoolArr(string num)
 {
     vector<bool> res;
@@ -246,8 +344,12 @@ vector<bool> setBoolArr(string num)
     {
         if (num[i] == '1')
             res.push_back(true);
-        else
+        else if(num[i] == '0')
             res.push_back(false);
+        else
+        {
+           exit(1);
+        }
     }
     return res;
 }
@@ -295,44 +397,107 @@ void printArr(vector<bool>& vec)
     }
     cout << "\n";
 }
-vector<bool> Subtract(vector<bool>&array1, vector<bool>& array2)
+void printVecToFile(vector<bool>& vec, ofstream& file)
+{
+    string vecToWrite;
+    if (vec.size() > 0)
+    {
+        for (int i = 0; i <= vec.size() - 1; i++)
+        {
+            if (vec[i])
+                vecToWrite.append("1");
+            else
+                vecToWrite.append("0");
+        }
+        file << vecToWrite << endl;
+    }
+    else
+    {
+        file << "0" << endl;
+    }
+}
+vector<bool> Subtract(vector<bool>& array1, vector<bool>& array2)
 {
     make_numbers_same_len(array1, array2);
     int len = array1.size();
-    vector<bool> res(len + 1, 0);
+    vector<bool> arr1cpy = array1;
+    vector<bool> res(len, 0);
     bool curry = 0;
     for (int i = len - 1; i >= 0; i--)
     {
-        if (array1[i] == true && array2[i] == true) // 1 - 1
+        if (arr1cpy[i] == true && array2[i] == true) // 1 - 1
         {
             if (curry == 0)
-                res[i + 1] = 0;
+                res[i] = 0;
             else
-                res[i + 1] = 1;
-            //curry = 1;
+                res[i] = 1;
         }
-        else if (array1[i] == true && array2[i] == false) // 1-0
+        else if (arr1cpy[i] == true && array2[i] == false) // 1-0
         {
-            res[i + 1] = 1;
+            res[i] = 1;
         }
-        else if (array1[i] == false && array2[i] == true) //0-1
+        else if (arr1cpy[i] == false && array2[i] == true) //0-1
         {
-            array1[i - 1]
+            res[i] = 1;
+            for (int  j = i-1;j>=0; j--)
+            {
+                if (arr1cpy[j] == false)
+                {
+                    arr1cpy[j] = true;
+                }
+                else
+                {
+                    arr1cpy[j] = false;
+                    break;
+                }
+            }
         }
-        else if (array1[i] == false && array2[i] == false) // 0 - 0
+        else if (arr1cpy[i] == false && array2[i] == false) // 0 - 0
         {
             if (curry == 0)
-                res[i + 1] = 0;
+                res[i] = false;
             else
             {
-                res[i + 1] = true;
+                res[i] = true;
                 curry = 0;
             }
         }
     }
-    if (curry == 1)
-        res[0] = true;
+    /*if (curry == 1)
+        res[0] = true;*/
     deleteZeros(res);
+    return res;
+
+}
+int checkBiggerNumber(const vector<bool>& array1,const vector<bool>& array2)
+{
+    if (array1.size() > array2.size())
+    {
+        return 1;
+    }
+    else if (array2.size() > array1.size())
+    {
+        return 0;
+    }
+    //make_numbers_same_len(array1, array2)
+    else
+    {
+        for (int i = 0; i < array1.size(); i++)
+        {
+            if (array1[i] && array2[i] || !array1[i] && !array2[i])
+                continue;
+            if (array1[i] && !array2[i])
+                return 1;
+            else if (!array1[i] && array2[i])
+                return 0;
+        }
+        return 2;
+    }
+}
+vector<bool> divideBytwo(vector<bool>& array1)
+{
+    vector<bool>& res(array1);
+    res.pop_back();
     return res;
 }
 

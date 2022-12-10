@@ -1,36 +1,75 @@
 #include <fstream>
 #include <iostream>
 #include <string>
-//#include <vector>
 #include "Algorithems.h"
 using namespace std;
 
-int main(int argc, char** args)
+int main(int argc, char** argv)
 {
-    // ifstream file;
-    // file.open(args[1]);
-    // string line;
-    // getline(file, line);
-    // bool num_of_function = stoi(line);
-    string str1,str2;
-    int n = 10;
-
-    cin >> str1;
-    cin >> str2;
-    vector<bool> array1 = setBoolArr(str1);
-    vector<bool> array2 = setBoolArr(str2);
-    Subtract(array1, array2);
-    //vector<bool> res1 = algo_one(array1, array2);
-    //vector<bool>res = algorithem_four(array1, array2);
-    vector<bool>res5 = algorithem_five(array1, array2);
-    //deleteZeros(res5);
-    cout << "\n";
-    for (int i = 0; i < res5.size(); i++)
-    {
-        cout << res5[i];
+    ifstream file(argv[1]);
+    ofstream ofile;
+    ofile.open(argv[2]);
+    if (!file.is_open()) {
+        std::cerr << "Error: Unable to open file" << std::endl;
+        return 1;
     }
-    //make_number(array1, n);
-    //times(array1, m);
-    //deleteZeros(array1);
-    //int m = 3;
+    string num1,num2,choice;
+    getline(file, choice);
+    getline(file, num1);
+    getline(file, num2);
+    vector<bool>array1 = setBoolArr(num1);
+    vector<bool>array2 = setBoolArr(num2);
+    vector<bool>res;
+    vector<bool> r;
+    int algoChoice = stoi(choice);
+    switch (algoChoice)
+    {
+    case 1:
+        res = algorithem_one(array1, array2);
+        printVecToFile(res, ofile);
+        break;
+    case 2:
+        res = algorithem_two(array1, array2);
+        printVecToFile(res, ofile);
+
+        break;
+    case 3:
+        res = algorithem_three(array1, array2);
+        printVecToFile(res, ofile);
+
+        break;
+    case 4:
+        res = algorithem_four(array1, array2);
+        printVecToFile(res, ofile);
+
+        break;
+    case 5:
+        res = algorithem_five(array1, array2);
+        printVecToFile(res, ofile);
+
+        break;
+    case 6:
+        res = algorithem_six(array1, array2);
+        printVecToFile(res, ofile);
+
+        break;
+    case 7:
+        res = algorithem_seven(array1, array2,r);
+        printVecToFile(res, ofile);
+        printVecToFile(r, ofile);
+        break;
+    case 8:
+        res = algorithem_eight(array1, array2,r);
+        printVecToFile(res, ofile);
+        printVecToFile(r, ofile);
+        break;
+    case 9:
+        allHellBreaksloos(array1, array2, r,ofile);
+        break;
+    default:
+        //error
+        break;
+    }
+    ofile.close();
+    file.close();
 }
