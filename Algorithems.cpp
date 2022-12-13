@@ -129,20 +129,12 @@ vector<bool> algorithem_five(vector<bool>& array1, vector<bool>& array2)
         vector<bool> n2 = second_half_array(array1);
         vector<bool> m1 = first_half_array(array2);
         vector<bool> m2 = second_half_array(array2);
-        cout << "n1 ="; printArr(n1);
-        cout << "n2 ="; printArr(n2);
-        cout << "m1 ="; printArr(m1);
-        cout << "m2 ="; printArr(m2);
+       
 
         vector<bool> n1m1 = algorithem_five(n1, m1); 
         vector<bool> n1m2 = algorithem_five(n1, m2);
         vector<bool> n2m1 = algorithem_five(n2, m1);
         vector<bool> n2m2 = algorithem_five(n2, m2);
-
-        cout << "n1m1 ="; printArr(n1m1);
-        cout << "n2m1 ="; printArr(n2m1);
-        cout << "n1m2 ="; printArr(n1m2);
-        cout << "n2m2 ="; printArr(n2m2);
 
 
         // Calc : 2^N * n1m1 + (2^(N/2) * (n1m2 + n2m1)) + (n2m2)
@@ -150,22 +142,14 @@ vector<bool> algorithem_five(vector<bool>& array1, vector<bool>& array2)
         // before sending to an algorithem we assume the numbers in the same size
         make_numbers_same_len(n1m2, n2m1); 
         vector<bool> mid_calc = algorithem_two(n1m2, n2m1);
-        cout << "mid_calc ="; printArr(mid_calc);
         times(mid_calc, N/2);
-        cout << "mid_calc after times ="; printArr(mid_calc);
-
         times(n1m1, N);
-        cout << "n2m2 after times ="; printArr(n1m1);
-
         // before sending to an algorithem we assume the numbers in the same size
         make_numbers_same_len(mid_calc, n1m1);
         mid_calc = algorithem_two(mid_calc, n1m1);
-        cout << "midcalc +n2m2 after times ="; printArr(mid_calc);
-
         // before sending to an algorithem we assume the numbers in the same size
         make_numbers_same_len(mid_calc, n2m2);
         vector<bool> res = algorithem_two(mid_calc, n2m2);
-        cout << "midcalc +n1m2  ="; printArr(res);
         return res;
     }
 }
@@ -183,10 +167,7 @@ vector<bool> algorithem_six(vector<bool>& array1, vector<bool>& array2)
         vector<bool> m1 = first_half_array(array2);
         vector<bool> m2 = second_half_array(array2);
 
-        cout << "n1 ="; printArr(n1);
-        cout << "n2 ="; printArr(n2);
-        cout << "m1 ="; printArr(m1);
-        cout << "m2 ="; printArr(m2);
+  
 
         vector<bool> F = algorithem_six(n1, m1);
         vector<bool> n1Plusn2 = algorithem_two(n1, n2);
@@ -194,10 +175,7 @@ vector<bool> algorithem_six(vector<bool>& array1, vector<bool>& array2)
         vector<bool> H = algorithem_six(n1Plusn2, m1Plusm2);
         vector<bool> G = algorithem_six(n2, m2);
 
-        cout << "n1m1 ="; printArr(F);
-        cout << "n1+n2 ="; printArr(n1Plusn2);
-        cout << "m1+m2 ="; printArr(m1Plusm2);
-        cout << "n2m2 ="; printArr(G);
+
 
 
         // Calc : 2^N * F + (2^(N/2) * (H-(F+G)) + (G)
@@ -206,7 +184,6 @@ vector<bool> algorithem_six(vector<bool>& array1, vector<bool>& array2)
         //create F+G
         vector<bool> FPlusG = algorithem_two(F, G);
         vector<bool> mid_calc;
-        cout << "FPlusG ="; printArr(FPlusG);
         int flag = checkBiggerNumber(H, FPlusG);
         if (flag == 0)
         {
@@ -220,17 +197,14 @@ vector<bool> algorithem_six(vector<bool>& array1, vector<bool>& array2)
         times(mid_calc, N / 2);
         //cout << "mid_calc after times ="; printArr(FPlusG);
         times(F, N);
-        cout << "F after times ="; printArr(F);
 
         // before sending to an algorithem we assume the numbers in the same size
         //make_numbers_same_len(mid_calc, F);
         mid_calc = algorithem_two(mid_calc, F);
-        cout << "midcalc +n2m2 after times ="; printArr(FPlusG);
 
         // before sending to an algorithem we assume the numbers in the same size
         //make_numbers_same_len(mid_calc, G);
         vector<bool> res = algorithem_two(mid_calc, G);
-        cout << "midcalc +n1m2  ="; printArr(res);
         return res;
     }
 }
@@ -258,7 +232,6 @@ vector<bool> algorithem_eight(vector<bool>& array1, vector<bool>& array2, vector
     vector<bool> one(1, 1);
     vector<bool> mulCheck;
     vector<bool> resCheck;
-    //bool flag = true;
     do
     {
         mid = algorithem_two(right, left);
@@ -276,6 +249,10 @@ vector<bool> algorithem_eight(vector<bool>& array1, vector<bool>& array2, vector
         else if (checkBiggerNumber(mulCheck, array1) == 1) // m*q>n
         {
             right = mid;  
+        }
+        else
+        {
+            break;
         }
 
     } while (true);
@@ -348,7 +325,8 @@ vector<bool> setBoolArr(string num)
             res.push_back(false);
         else
         {
-           exit(1);
+            cout << "Error: Invalid input" << endl;
+            exit(1);
         }
     }
     return res;
