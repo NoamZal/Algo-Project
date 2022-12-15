@@ -1,7 +1,6 @@
 #include "Algorithems.h"
 vector<bool> algorithem_one(vector<bool>& array1, vector<bool>& array2)
 {
-    bool flag = true;
     vector<bool> m = array2;
     vector<bool> res = array1;
     vector<bool> one(1, 1);
@@ -59,10 +58,11 @@ vector<bool> algorithem_three(vector<bool>& array1, vector<bool>& array2)
     vector<bool>res(array1.size(),0);
     vector<bool>iter = array2;
     vector<bool> one(1, 1);
-    while (iter.size() != 0)
+    while (checkBiggerNumber(iter,one) == 1)
     {
         res = algorithem_one(res, array1);
         iter = Subtract(iter, one);
+        make_numbers_same_len(iter, one);
     }
     return res;
 }

@@ -135,7 +135,7 @@ void testForCheck()
 
             }
         }
-        if (!flags[2]) {
+        /*if (!flags[2]) {
             auto start = chrono::high_resolution_clock::now();
             if (N == 16)
             {
@@ -153,7 +153,7 @@ void testForCheck()
                 flags[2] = true;
 
             }
-        }
+        }*/
         if (!flags[3]) {
             auto start = chrono::high_resolution_clock::now();
             algorithem_four(num1, num2);
