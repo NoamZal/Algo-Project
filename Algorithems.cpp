@@ -4,37 +4,14 @@ vector<bool> algorithem_one(vector<bool>& array1, vector<bool>& array2)
     bool flag = true;
     vector<bool> m = array2;
     vector<bool> res = array1;
-    do
+    vector<bool> one(1, 1);
+    while (checkBiggerNumber(m, one))
     {
-        for (int i = m.size()-1; i >= 0; i--)
-        {
-            if (m[i] == false)
-                m[i] = true;
-            else
-            {
-                m[i] = false;
-                flag = true;
-                break;
-            }
-            flag = false;
-        }
-        if (!flag)
-            break;
-        for (int i = res.size() - 1; i >= 0; i--)
-        {
-            if (res[i] == true)
-                res[i] = false;
-            else
-            {
-                res[i] = true;
-                break;
-            }
-            if(i==0)
-                res.insert(res.begin(), true);
-        }
-    } while (flag);
+        m = Subtract(m, one);
+        res = addOne(res);
+        make_numbers_same_len(m, one);
+    }
     return res;
-    
 }
 vector<bool> algorithem_two(vector<bool>& array1, vector<bool>& array2)
 {
@@ -478,5 +455,38 @@ vector<bool> divideBytwo(vector<bool>& array1)
     res.pop_back();
     return res;
 }
-
+vector<bool> addOne(const vector<bool>& array1) 
+{
+    bool carry = 0;
+    vector<bool>res = array1;
+    int len = res.size() - 1;
+    if (array1[len])
+    {
+        res[len] = 0;
+        carry = 1;
+    }
+    else 
+    {
+        res[len] = 1;
+        return res;
+    }
+    for (int i = array1.size() - 2; i >= 0; i--)
+    {
+        if (array1[i])
+        {
+            res[i] = 0;
+        }
+        else
+        {
+            res[i] = 1;
+            carry = 0;
+            break;
+        }
+    }
+    if (carry == 1)
+    {
+        res.insert(res.begin(), 1);
+    }
+    return res;
+}
 

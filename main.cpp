@@ -85,6 +85,7 @@ int main(int argc, char** argv)
     ofile.close();
     file.close();*/
     testForCheck();
+
 }
 void testForCheck()
 {
@@ -96,6 +97,7 @@ void testForCheck()
     vector<int> res(8,0);
     while (N<= 2048)
     {
+        cout << "strating iter" << endl;
         num1.clear();
         num2.clear();
         num1.push_back(1);
@@ -135,6 +137,12 @@ void testForCheck()
         }
         if (!flags[2]) {
             auto start = chrono::high_resolution_clock::now();
+            if (N == 16)
+            {
+                cout << "entring algo_three with vectors" << endl;
+                cout << "vec1 :"; printArr(num1);
+                cout << "vec2 :"; printArr(num2);
+            }
             algorithem_three(num1, num2);
             auto stop = chrono::high_resolution_clock::now();
 
@@ -215,6 +223,8 @@ void testForCheck()
         }
         N *= 2;
         cout << N << endl;
+        
+
     }
     for (int i = 0; i <8; i++)
     {

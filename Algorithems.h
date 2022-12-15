@@ -19,7 +19,7 @@ vector<bool> algorithem_six(vector<bool>& array1, vector<bool>& array2);
 vector<bool> algorithem_seven(vector<bool>& array1, vector<bool>& array2, vector<bool>& r);
 vector<bool> algorithem_eight(vector<bool>& array1, vector<bool>& array2, vector<bool>& r);
 void allHellBreaksloos(vector<bool>& array1, vector<bool>& array2, vector<bool>& r, ofstream& ofile);
-
+vector<bool> addOne(const vector<bool>& array1);
 
 vector<bool> setBoolArr(string num);
 void make_number(vector<bool>& number, int sizeToGetTo);
